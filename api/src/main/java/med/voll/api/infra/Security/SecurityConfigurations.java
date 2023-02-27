@@ -21,14 +21,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurations {
     @Autowired
     private SecurityFilter securityFilter;
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable() // desabilita o CSRF pq a segurança será feita via tokens
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)// politica_de_criação_da_sessão_para_API's_não_pode_ser_statefull
-                .and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/login").permitAll()
-                .anyRequest().authenticated().and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .and().authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                .anyRequest().authenticated().and()
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("pacientes")
+@SecurityRequirement(name = "bearer-key")  // anotação do Spring doc para o cabecalho Brarer para inserir o token JWT
+
 public class PacienteController {
 
     @Autowired
